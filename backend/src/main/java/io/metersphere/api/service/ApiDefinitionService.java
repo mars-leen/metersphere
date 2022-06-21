@@ -524,7 +524,7 @@ public class ApiDefinitionService {
             criteria.andMethodEqualTo(request.getMethod()).andStatusNotEqualTo("Trash")
                     .andProtocolEqualTo(request.getProtocol()).andPathEqualTo(request.getPath())
                     .andProjectIdEqualTo(request.getProjectId()).andIdNotEqualTo(request.getId())
-                    .andVersionIdEqualTo(request.getVersionId());
+                    .andVersionIdEqualTo(request.getVersionId()).andModuleIdEqualTo(request.getModuleId());
             Project project = projectMapper.selectByPrimaryKey(request.getProjectId());
             ProjectConfig config = projectApplicationService.getSpecificTypeValue(project.getId(), ProjectApplicationType.URL_REPEATABLE.name());
             boolean urlRepeat = config.getUrlRepeatable();
@@ -541,7 +541,7 @@ public class ApiDefinitionService {
         } else {
             example.createCriteria().andProtocolEqualTo(request.getProtocol()).andStatusNotEqualTo("Trash")
                     .andNameEqualTo(request.getName()).andProjectIdEqualTo(request.getProjectId())
-                    .andIdNotEqualTo(request.getId()).andVersionIdEqualTo(request.getVersionId());
+                    .andIdNotEqualTo(request.getId()).andVersionIdEqualTo(request.getVersionId()).andModuleIdEqualTo(request.getModuleId());
             if (apiDefinitionMapper.countByExample(example) > 0) {
                 MSException.throwException(Translator.get("load_test_already_exists"));
             }
@@ -553,12 +553,13 @@ public class ApiDefinitionService {
         if (request.getProtocol().equals(RequestType.HTTP)) {
             example.createCriteria().andMethodEqualTo(request.getMethod()).andStatusNotEqualTo("Trash")
                     .andPathEqualTo(request.getPath())
-                    .andProjectIdEqualTo(request.getProjectId()).andIdNotEqualTo(request.getId());
+                    .andProjectIdEqualTo(request.getProjectId()).andIdNotEqualTo(request.getId())
+                    .andModuleIdEqualTo(request.getModuleId());
             return apiDefinitionMapper.selectByExampleWithBLOBs(example);
         } else {
             example.createCriteria().andProtocolEqualTo(request.getProtocol()).andStatusNotEqualTo("Trash")
                     .andNameEqualTo(request.getName()).andProjectIdEqualTo(request.getProjectId())
-                    .andIdNotEqualTo(request.getId());
+                    .andIdNotEqualTo(request.getId()).andModuleIdEqualTo(request.getModuleId());
             return apiDefinitionMapper.selectByExampleWithBLOBs(example);
         }
     }
@@ -580,13 +581,15 @@ public class ApiDefinitionService {
                     .andPathEqualTo(request.getPath())
                     .andNameEqualTo(request.getName())
                     .andProjectIdEqualTo(request.getProjectId())
-                    .andIdNotEqualTo(request.getId());
+                    .andIdNotEqualTo(request.getId())
+                    .andModuleIdEqualTo(request.getModuleId());
         } else {
             example.createCriteria()
                     .andStatusNotEqualTo("Trash")
                     .andNameEqualTo(request.getName())
                     .andProjectIdEqualTo(request.getProjectId())
-                    .andIdNotEqualTo(request.getId());
+                    .andIdNotEqualTo(request.getId())
+                    .andModuleIdEqualTo(request.getModuleId());
         }
 
         return apiDefinitionMapper.selectByExampleWithBLOBs(example);

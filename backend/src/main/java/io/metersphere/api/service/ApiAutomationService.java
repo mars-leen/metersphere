@@ -675,7 +675,8 @@ public class ApiAutomationService {
                 .andProjectIdEqualTo(request.getProjectId())
                 .andStatusNotEqualTo("Trash")
                 .andIdNotEqualTo(request.getId())
-                .andVersionIdEqualTo(request.getVersionId());
+                .andVersionIdEqualTo(request.getVersionId())
+                .andApiScenarioModuleIdEqualTo(request.getApiScenarioModuleId());
         if (apiScenarioMapper.countByExample(example) > 0) {
             MSException.throwException(Translator.get("automation_name_already_exists"));
         }
@@ -1186,7 +1187,8 @@ public class ApiAutomationService {
         ApiScenarioExample.Criteria criteria = example.createCriteria();
         criteria.andProjectIdEqualTo(request.getProjectId())
                 .andStatusNotEqualTo("Trash")
-                .andNameEqualTo(request.getName());
+                .andNameEqualTo(request.getName())
+                .andApiScenarioModuleIdEqualTo(request.getApiScenarioModuleId());
         if (StringUtils.isNotBlank(request.getId())) {
             // id 不为空 则判断，id一样或者名字一样则是同一个用例
             ApiScenarioExample.Criteria criteria1 = example.createCriteria();
